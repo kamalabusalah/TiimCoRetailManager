@@ -1,0 +1,2 @@
+# TiimCoRetailManager
+sale items onlone
