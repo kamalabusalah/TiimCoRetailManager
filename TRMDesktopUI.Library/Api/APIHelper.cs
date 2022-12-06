@@ -6,16 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using TRMdesktopUI.Models;
+using TRMdesktopUI.Library.Api;
+using TRMDesktopUI.Library.Models;
+using System.Net.Http.Headers;
 
-namespace TRMdesktopUI.Helpers
+namespace TRMdesktopUI.Library.Api
 {
     public class APIHelper : IAPIHelper
     {
         private HttpClient apiClient;
+        private ILoggedInUserModel _LoggedInUser;
 
-        public APIHelper()
+        public APIHelper(ILoggedInUserModel loggedInUser) 
         {
             InitialzeClient();
+            _LoggedInUser=loggedInUser;
         }
 
 
@@ -50,5 +55,38 @@ namespace TRMdesktopUI.Helpers
 
             }
         }
+        public async Task GetLoggedInUserInfo(string token)
+        {
+            apiClient.DefaultRequestHeaders.Clear();    
+            apiClient.DefaultRequestHeaders.Accept.Clear();
+            apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/Json"));
+            apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+            using (HttpResponseMessage respone = await apiClient.GetAsync("/api/User"))
+            {
+                if (respone.IsSuccessStatusCode)
+                {
+                    var result=await respone.Content.ReadAsAsync<LoggedInUserModel>();
+                    _LoggedInUser.Id = result.Id;
+                    _LoggedInUser.CreatedDate = result.CreatedDate;
+                    _LoggedInUser.EmailAddress = result.EmailAddress;
+                    _LoggedInUser.FirstName= result.FirstName;
+                    _LoggedInUser.LastName= result.LastName;
+                  
+                    _LoggedInUser.Token = token;
+
+                }
+                else
+                {
+                    throw new Exception(respone.ReasonPhrase);
+                }
+
+            }
+
+        }
+
+        //Task IAPIHelper.GetLoggedInUserInfo(string token)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

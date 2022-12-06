@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using TRMdesktopUI.Helpers;
+using TRMdesktopUI.Library.Api;
 using TRMdesktopUI.ViewModels;
+using TRMDesktopUI.Library.Models;
 
 namespace TRMdesktopUI
 {
@@ -34,6 +36,7 @@ namespace TRMdesktopUI
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<ILoggedInUserModel,LoggedInUserModel>()
                 .Singleton<IAPIHelper, APIHelper>();
 
             GetType().Assembly.GetTypes()
