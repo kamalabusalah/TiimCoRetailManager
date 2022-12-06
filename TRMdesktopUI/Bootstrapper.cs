@@ -33,7 +33,8 @@ namespace TRMdesktopUI
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>();
+                .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<IAPIHelper, APIHelper>();
 
             GetType().Assembly.GetTypes()
                 .Where(Type => Type.IsClass)
@@ -41,7 +42,14 @@ namespace TRMdesktopUI
                 
                 .ForEach(viewModelType => _container.RegisterPerRequest(
                     viewModelType, viewModelType.ToString(), viewModelType));
+
         }
+
+        private void Singleton<T1, T2>()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void  OnStartup(object sender, StartupEventArgs e)
         {
             //base.OnStartup(sender, e);  
