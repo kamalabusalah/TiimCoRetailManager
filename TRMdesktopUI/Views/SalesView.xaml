@@ -32,8 +32,16 @@
         <!--Column 0-->
         <TextBlock Text="Items" Grid.Row="1" Grid.Column="0"/>
         <ListBox x:Name="Products" Grid.Row="2" Grid.Column="0"
-                 MinHeight="200" MinWidth="150" Margin="5 "/>
-        <!--Column  1-->
+                 MinHeight="200" MinWidth="150" Margin="5 "
+                 SelectedItem="{Binding SelectedProduct}" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding ProductName}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+            <!--Column  1-->
         <StackPanel Orientation="Vertical" Grid.Column="1"
                     Grid.Row="2" Margin="20 0 20 20">
             <TextBlock Text="Quantity"/>
@@ -47,11 +55,19 @@
         <!--Column 2-->
         <TextBlock Text="Cart" Grid.Row="1" Grid.Column="2"/>
         <ListBox x:Name="Cart" Grid.Row="2" Grid.Column="2"
-                  MinHeight="200" MinWidth="150"/>
+                  MinHeight="200" MinWidth="300">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding DisplayText}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+
+
+        </ListBox>
         <DockPanel  Grid.Row="3" Grid.Column="2">
-            <TextBlock  Text="subTotal:" Margin="0 0 15 0"/>
-            <TextBlock x:Name="subTotal" Text="$0.00" Grid.Row="2" Grid.Column="2"
-                   TextAlignment="Right"/>
+            <TextBlock  Text="subTotal:" Margin="4 0 15 10"/>
+            <TextBlock x:Name="SubTotal" Text="$0.00" Grid.Row="2" Grid.Column="2"
+                   TextAlignment="Center"/>
         </DockPanel>
         <DockPanel  Grid.Row="4" Grid.Column="2">
             <TextBlock  Text="Tax:"/>

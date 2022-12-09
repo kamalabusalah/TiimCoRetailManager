@@ -10,6 +10,8 @@ using System.Windows.Controls;
 using TRMdesktopUI.Helpers;
 using TRMdesktopUI.Library.Api;
 using TRMdesktopUI.ViewModels;
+using TRMDesktopUI.Library.Api;
+using TRMDesktopUI.Library.Helpers;
 using TRMDesktopUI.Library.Models;
 
 namespace TRMdesktopUI
@@ -31,12 +33,14 @@ namespace TRMdesktopUI
 
         protected override void Configure()
         {
-            _container.Instance(_container);
+            _container.Instance(_container)
+              .PerRequest<IProductEndpoint, ProductEndpoint>();
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
                 .Singleton<ILoggedInUserModel,LoggedInUserModel>()
+                .Singleton<IConfigHelper,ConfigHelper>()
                 .Singleton<IAPIHelper, APIHelper>();
 
             GetType().Assembly.GetTypes()
@@ -48,15 +52,16 @@ namespace TRMdesktopUI
 
         }
 
-        private void Singleton<T1, T2>()
-        {
-            throw new NotImplementedException();
-        }
+        
 
         protected override void  OnStartup(object sender, StartupEventArgs e)
         {
             //base.OnStartup(sender, e);  
             DisplayRootViewForAsync<ShellViewModel>();  
+        }
+        private void Singleton<T1, T2>()
+        {
+            throw new NotImplementedException();
         }
 
         protected override object GetInstance(Type service, string key)
